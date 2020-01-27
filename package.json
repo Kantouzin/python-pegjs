@@ -1,0 +1,21 @@
+{
+  "name": "python-pegjs",
+  "version": "0.0.1",
+  "description": "PEG.js for Python",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "node test/test.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Kantouzin/python-pegjs.git"
+  },
+  "author": "Kantouzin",
+  "license": "MIT",
+  "dependencies": {},
+  "devDependencies": {
+    "gulp": "^4.0.2",
+    "gulp-pegjs": "^0.2.0",
+    "pegjs": "^0.10.0"
+  }
+}
