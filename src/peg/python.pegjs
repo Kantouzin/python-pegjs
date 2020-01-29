@@ -37,6 +37,7 @@ pass_stmt
 
 compound_stmt
   = if_stmt
+  / for_stmt
   /* / while_stmt */
 
 if_stmt
@@ -44,6 +45,11 @@ if_stmt
     ('elif' test ':' suite)*
     ('else' ':' suite)?
     { return ["if", t, s]; }
+
+for_stmt
+  = 'for' __ e:exprlist __ 'in' __ t:testlist _ ':' s:suite
+    // ('else' ':' suite)?
+    { return  ["for", e, t, s]; }
 
 suite
   = simple_stmt
@@ -80,6 +86,9 @@ comparison
 comp_op
   = '<' / '>' / '==' / '>=' / '<=' / '<>' / '!=' / 'in' / 'not' 'in' / 'is' / 'is' / 'not'
 
+star_expr
+  = '*' _ expr
+
 expr
   = xor_expr ('|' xor_expr)*
 
@@ -110,7 +119,13 @@ atom_expr
 /*   = 'await'? atom trailer* */
 
 atom
-  = NUMBER / STRING+ / 'None' / 'True' / 'False'
+  = NAME / NUMBER / STRING+ / 'None' / 'True' / 'False'
+
+exprlist
+  = (expr / star_expr) (_ ',' _ (expr / star_expr))* (_ ',' _)?
+
+testlist
+  = test (_ ',' _ test)* (_ ',' _)?
 
 // =========== Token ============
 
@@ -155,6 +170,10 @@ tabs
 
 tab
   = ("\t" / "    ") { return ""; }
+
+NAME
+  = head:[a-zA-Z] tail:[a-zA-Z0-9]*
+    { return head + tail.join(""); }
 
 STRING
   = '"' stringitem* '"' / "'" stringitem* "'"
